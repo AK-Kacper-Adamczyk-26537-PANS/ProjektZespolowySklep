@@ -40,7 +40,7 @@
             <div class="produkttekst">
 
                 <div class="form-group">
-                    <select id="categorySelect" class="form-control custom-select" name="kategoriaId">
+                    <select id="categorySelect" class="form-control custom-select" name="kategoriaId" required>
                         <option value="">Wybierz kategorię</option>
                         <option th:each="kategoria : ${kategorie}"
                                 th:value="${kategoria.idKategorii}"
@@ -53,28 +53,28 @@
 
 
                 <div class="form-group">
-                    <input asp-for="#" placeholder="Dodaj nazwę" class="form-control custom-input" th:field="*{nazwa}"/>
+                    <input asp-for="#" placeholder="Dodaj nazwę" class="form-control custom-input" th:field="*{nazwa}" required/>
                     <span asp-validation-for="#" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <input asp-for="#" placeholder="Dodaj cenę" class="form-control" type="text" th:field="*{cena}"/>
+                    <input asp-for="#" placeholder="Dodaj cenę" class="form-control" type="text" th:field="*{cena}" required/>
                     <span asp-validation-for="#" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <input asp-for="LinkZdjecia" id="imageUrlInput" placeholder="Dodaj link do zdjęcia" class="form-control" th:field="*{urlzdjecia}"/>
+                    <input asp-for="LinkZdjecia" id="imageUrlInput" placeholder="Dodaj link do zdjęcia" class="form-control" th:field="*{urlzdjecia}" required/>
                     <span asp-validation-for="LinkZdjecia" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <textarea asp-for="Opis" id="descriptionInput" placeholder="Dodaj opis produktu" class="form-control" rows="4" th:field="*{opis}"></textarea>
+                    <textarea asp-for="Opis" id="descriptionInput" placeholder="Dodaj opis produktu" class="form-control" rows="4" th:field="*{opis}" required></textarea>
                     <span asp-validation-for="Opis" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
                     <label asp-for="Rozmiar" class="control-label">Rozmiar:</label>
-                    <select asp-for="Rozmiar" class="rozmiarrozwijanie" th:field="*{rozmiar}">
+                    <select asp-for="Rozmiar" class="rozmiarrozwijanie" th:field="*{rozmiar}" required>
                         <option value="">Wybierz rozmiar</option>
                         <option value="XXS">XXS</option>
                         <option value="XS">XS</option>

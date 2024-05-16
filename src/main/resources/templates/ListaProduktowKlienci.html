@@ -102,7 +102,18 @@
             </div>
             <div class="right-info">
                 <p class="add-button">
-                    <a th:href="@{/dodajDoKoszyka/{idKlienta}/{idProduktu}/1(idKlienta=${session.userId}, idProduktu=${produkt.idProduktu})}" class="add-to-cart-button">Dodaj do koszyka</a>
+<!--                    <a th:href="@{/dodajDoKoszyka/{idKlienta}/{idProduktu}/1(idKlienta=${session.userId}, idProduktu=${produkt.idProduktu})}" class="add-to-cart-button">Dodaj do koszyka</a>-->
+<!--                <form action="#" th:action="/koszyk/dodajDoKoszyka/1/${produkt.idProduktu}/1" method="post">-->
+<!--                    <button type="submit" class="add-to-cart-button">Dodaj do koszyka</button>-->
+<!--                </form>-->
+
+<!--                <a th:href="@{'/koszyk/dodajDoKoszyka/1/' + ${produkt.idProduktu} + '/1'}" class="add-to-cart-button">Dodaj do koszyka</a>-->
+<!--                    <a class="edit-button" th:href="@{'/Produkt/edytuj/' + ${produkt.idProduktu}}">-->
+<!--                    </a>-->
+
+                <form th:action="@{/koszyk/dodajDoKoszyka/1/{idProduktu}/1(idProduktu=${produkt.idProduktu})}" method="post">
+                    <button type="submit" class="add-to-cart-button">Dodaj do koszyka</button>
+                </form>
                 </p>
             </div>
         </div>

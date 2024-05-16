@@ -6,7 +6,9 @@ import com.example.sklep2xd.Service.KlientService;
 import com.example.sklep2xd.Service.ProduktService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,7 @@ public class StronaGlownaController {
         this.produktService = produktService;
         this.klientService = klientService;
     }
+
 
     @GetMapping
     public String homepage(Model model){

@@ -24,18 +24,35 @@ public class SecurityConfig {
     @Autowired
     private PracownikDetailsService pracownikDetailsService;  // Dodano wstrzyknięcie PracownikDetailsService
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authorizeHttpRequests(authz -> authz
+////                        .requestMatchers("/logowanie", "/rejestracja").permitAll()
+////                        .requestMatchers("/klienci/**","/home").hasRole("KLIENT")
+////                        .requestMatchers("/Pracownik/**").hasRole("employee")
+//                        .requestMatchers("/Pracownik/**", "/admin/**", "/klienci/**", "/Produkt/**", "/home/**", "/logowanie", "/koszyk/**", "/Kategoria/**", "/Recenzja/**", "Zamowienie/**", "/rejestracja", "/dodajDoKoszyka/**").permitAll()
+////                        .requestMatchers("/admin/**").hasRole("ADMIN")
+//                        .requestMatchers("/miniwidok.html","/css/**", "/Grafiki/**", "/js/**").permitAll()  // Zawsze zezwalaj na zasoby statyczne
+//                        .anyRequest().authenticated()
+//                )
+//                .headers().frameOptions().sameOrigin() // Ustawienie nagłówka X-Frame-Options
+//                .and()
+//                .httpBasic(AbstractHttpConfigurer::disable)
+//                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+//        return http.build();
+//    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-//                        .requestMatchers("/logowanie", "/rejestracja").permitAll()
-//                        .requestMatchers("/klienci/**","/home").hasRole("KLIENT")
-//                        .requestMatchers("/Pracownik/**").hasRole("employee")
-                        .requestMatchers("/Pracownik/**", "/admin/**", "/klienci/**", "/Produkt/**", "/home/**", "/logowanie", "/koszyk/**", "/Kategoria/**", "/Recenzja/**", "Zamowienie/**", "/rejestracja").permitAll()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/miniwidok.html","/css/**", "/Grafiki/**", "/js/**").permitAll()  // Zawsze zezwalaj na zasoby statyczne
+                        .requestMatchers("/Pracownik/**", "/admin/**", "/klienci/**", "/Produkt/**", "/home/**", "/logowanie", "/koszyk/**", "/Kategoria/**", "/Recenzja/**", "/Zamowienie/**", "/rejestracja", "/dodajDoKoszyka/**", "/**").permitAll()
+                        .requestMatchers("/miniwidok.html", "/css/**", "/Grafiki/**", "/js/**").permitAll()  // Zawsze zezwalaj na zasoby statyczne
                         .anyRequest().authenticated()
                 )
                 .headers().frameOptions().sameOrigin() // Ustawienie nagłówka X-Frame-Options

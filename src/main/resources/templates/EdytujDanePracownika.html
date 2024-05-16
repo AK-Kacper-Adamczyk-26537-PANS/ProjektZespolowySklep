@@ -32,15 +32,18 @@
 <div class="container">
     <form action="#" th:object="${pracownikEdit}" method="post">
         <div class="column">
-            <input type="text" placeholder="Imię" th:field="*{imie}">
-            <input type="text" placeholder="Nazwisko" th:field="*{nazwisko}">
-            <input type="text" placeholder="Login" th:field="*{login}">
-            <input type="password" placeholder="Hasło" th:field="*{haslo}" id="haslo">
-            <input type="password" placeholder="Potwierdź hasło" id="potwierdzHaslo">
-            <select name="role" id="role" th:field="*{dzial}">
+            <input type="text" placeholder="Imię" th:field="*{imie}" required>
+            <input type="text" placeholder="Nazwisko" th:field="*{nazwisko}" required>
+            <input type="text" placeholder="Login" th:field="*{login}" required>
+            <input type="password" placeholder="Hasło" th:field="*{haslo}" id="haslo" required>
+            <input type="password" placeholder="Potwierdź hasło" id="potwierdzHaslo" required>
+            <select name="role" id="role" th:field="*{dzial}" required>
                 <option value="admin">Administrator</option>
                 <option value="employee">Pracownik Działu zamówień</option>
             </select>
+            <div class="error-message" style="display: none; color: red;">
+                <p></p>
+            </div>
             <div class="buttons">
                 <button type="submit" id="save-button" onclick="return sprawdzHasla()">Zapisz zmiany</button>
                 <a th:href="@{/Pracownik/lista}"><button type="button" id="cancel-button">Anuluj</button></a>
@@ -53,14 +56,21 @@
     function sprawdzHasla() {
         var haslo = document.getElementById("haslo").value;
         var potwierdzHaslo = document.getElementById("potwierdzHaslo").value;
+        var errorDiv = document.querySelector(".error-message");
+        var errorMessage = "";
+
         if (haslo !== potwierdzHaslo) {
-            alert("Hasło i potwierdzenie hasła są różne!");
+            errorMessage = "Hasło i potwierdzenie hasła są różne!";
+            errorDiv.innerHTML = "<p>" + errorMessage + "</p>";
+            errorDiv.style.display = "block";
             return false; // Przerwij wysyłanie formularza
         }
+
+        // Ukrycie komunikatu o błędzie, jeśli wszystko jest w porządku
+        errorDiv.style.display = "none";
         return true; // Kontynuuj wysyłanie formularza
     }
 </script>
-
 
 
 

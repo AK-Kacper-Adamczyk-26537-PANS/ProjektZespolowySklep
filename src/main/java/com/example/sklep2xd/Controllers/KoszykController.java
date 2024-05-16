@@ -51,39 +51,56 @@ public class KoszykController {
 //        model.addAttribute("Koszyk", koszyk);
 //        return "Koszyk";
 //    }
-//        @GetMapping("/{idKlienta}")
-//        public String koszykKlienta(@PathVariable("idKlienta") int idKlienta, Model model){
-//            List<KoszykDto> koszyk = koszykService.findKoszykByKlientId(idKlienta);
-//            double sumaCen = KoszykService.obliczCeneKoszyka(koszyk);
-//            model.addAttribute("header", "Twój koszyk");
-//            model.addAttribute("Koszyk", koszyk);
-//            model.addAttribute("sumaCen", sumaCen);
-//            return "Koszyk";
-//        }
+        @GetMapping("/{idKlienta}")
+        public String koszykKlienta(@PathVariable("idKlienta") int idKlienta, Model model){
+            List<KoszykDto> koszyk = koszykService.findKoszykByKlientId(idKlienta);
+            double sumaCen = KoszykService.obliczCeneKoszyka(koszyk);
+            model.addAttribute("header", "Twój koszyk");
+            model.addAttribute("Koszyk", koszyk);
+            model.addAttribute("sumaCen", sumaCen);
+            return "Koszyk";
+        }
 
 
-    @GetMapping
-    public String koszykKlienta(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        int idKlienta = userDetails.getId(); // Pobierz ID zalogowanego użytkownika
+//    @GetMapping
+//    public String koszykKlienta(Model model) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+//        int idKlienta = userDetails.getId(); // Pobierz ID zalogowanego użytkownika
+//
+//        List<KoszykDto> koszyk = koszykService.findKoszykByKlientId(idKlienta);
+//        double sumaCen = KoszykService.obliczCeneKoszyka(koszyk);
+//        model.addAttribute("header", "Twój koszyk");
+//        model.addAttribute("Koszyk", koszyk);
+//        model.addAttribute("sumaCen", sumaCen);
+//        return "Koszyk";
+//    }
 
-        List<KoszykDto> koszyk = koszykService.findKoszykByKlientId(idKlienta);
-        double sumaCen = KoszykService.obliczCeneKoszyka(koszyk);
-        model.addAttribute("header", "Twój koszyk");
-        model.addAttribute("Koszyk", koszyk);
-        model.addAttribute("sumaCen", sumaCen);
-        return "Koszyk";
-    }
 
+//    @PostMapping("/dodajDoKoszyka/{idKlienta}/{idProduktu}/{ilosc}") //ma być wywoływane na stronach z produktami
+//    public String dodajDoKoszyka(@PathVariable("idKlienta") int idKlienta,
+//                                 @PathVariable("idProduktu") int idProduktu,
+//                                 @PathVariable("ilosc") int ilosc, Model model){
+//        KlientEntity klient = klientRep.findByIdKlienta(idKlienta);
+//        ProduktEntity produkt = produktRep.findByIdProduktu(idProduktu);
+//        model.addAttribute("Koszyk1",produkt);
+//        KoszykPK id = new KoszykPK(idKlienta, idProduktu);
+//        KoszykEntity koszykEntity = new KoszykEntity();
+//        koszykEntity.setKpk(id);
+//        koszykEntity.setIlosc(ilosc);
+//        koszykEntity.setKlient(klient);
+//        koszykEntity.setProdukt(produkt);
+//        koszykService.saveKoszyk(koszykEntity);
+//        return "Koszyk";
+//    }
 
-    @PostMapping("/dodajDoKoszyka/{idKlienta}/{idProduktu}/{ilosc}") //ma być wywoływane na stronach z produktami
+    @PostMapping("/dodajDoKoszyka/{idKlienta}/{idProduktu}/{ilosc}")
     public String dodajDoKoszyka(@PathVariable("idKlienta") int idKlienta,
                                  @PathVariable("idProduktu") int idProduktu,
-                                 @PathVariable("ilosc") int ilosc, Model model){
+                                 @PathVariable("ilosc") int ilosc,
+                                 Model model) {
         KlientEntity klient = klientRep.findByIdKlienta(idKlienta);
         ProduktEntity produkt = produktRep.findByIdProduktu(idProduktu);
-        model.addAttribute("Koszyk1",produkt);
         KoszykPK id = new KoszykPK(idKlienta, idProduktu);
         KoszykEntity koszykEntity = new KoszykEntity();
         koszykEntity.setKpk(id);
@@ -91,16 +108,16 @@ public class KoszykController {
         koszykEntity.setKlient(klient);
         koszykEntity.setProdukt(produkt);
         koszykService.saveKoszyk(koszykEntity);
-        return "Koszyk";
+        return "redirect:/koszyk/1" ;  // Redirect to the cart view
     }
 
-    @PostMapping("/dodajDoKoszyka")
-    public String dodajDoKoszyka(@RequestParam("idKlienta") int idKlienta,
-                                 @RequestParam("idProduktu") int idProduktu,
-                                 Model model) {
-        // Tutaj dodaj logikę dodawania produktu do koszyka
-        return "redirect:/lista-produktow"; // Przekierowanie do listy produktów lub innego widoku
-    }
+//    @PostMapping("/dodajDoKoszyka")
+//    public String dodajDoKoszyka(@RequestParam("idKlienta") int idKlienta,
+//                                 @RequestParam("idProduktu") int idProduktu,
+//                                 Model model) {
+//        // Tutaj dodaj logikę dodawania produktu do koszyka
+//        return "redirect:/lista-produktow"; // Przekierowanie do listy produktów lub innego widoku
+//    }
 
 
     @PostMapping("/usun/{idk}/{idp}")

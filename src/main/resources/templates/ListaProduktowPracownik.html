@@ -57,7 +57,7 @@
     <img crossorigin="anonymous" th:src="@{${produkt.urlzdjecia}}" class="obrazek">
 <!--    <img crossorigin="anonymous" src="https://drive.lienuc.com/uc?id=13L8s3HfqP2x06cmDJGM6QCD2jR9WvkXO" alt="" class="obrazek">-->
     <div class="produkttekst">
-      <p th:text="'Nazwa: ' + ${produkt.nazwa}" class="tytulproduktu">  <span class="edytuj">(edytuj)</span></p>
+      <p th:text="${produkt.nazwa}" class="tytulproduktu">  <span class="edytuj">(edytuj)</span></p>
       <p th:text="'Cena: ' + ${#numbers.formatDecimal(produkt.cena, 2, 'COMMA', 2, 'POINT')} + ' PLN'" class="cenaproduktu"></p>
       <p class="dostepnerozmiary">Dostępne rozmiary:   <span class="edytuj"></span></p>
 

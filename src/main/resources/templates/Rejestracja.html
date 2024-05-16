@@ -1,160 +1,71 @@
-<!--<!DOCTYPE html>-->
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/rejestracja.css">
-    <link rel="icon" th:href="@{/Grafiki/ff.ico}" type="image/png" size="32">
+    <link rel="icon" href="/Grafiki/ff.ico" type="image/png" size="32">
     <title>Strona Rejestracji</title>
 </head>
 <body>
 
-<style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        height: 100vh;
-        background: linear-gradient(to right, #e2e2e2, #ee7b4a); /* Gradient tła */
-    }
-
-    .container {
-        background-color: #fff;
-        border-radius: 30px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-        position: relative;
-        overflow: hidden;
-        width: 80vw;
-        height: 80vh;
-    }
-
-    .registration-form {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: calc(40% - 5px); /* Połowa szerokości kontenera */
-        height: 100%;
-        box-sizing: border-box;
-        background-color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        padding: 70px;
-        margin: auto 40px;
-    }
-
-    .registration-form h2 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .registration-form input {
-        width: 100%;
-        padding: 10px 10px 10px 20px;
-        margin-bottom: 20px;
-        border-radius: 50px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        background-color: #e3e3e3;
-    }
-
-    .registration-form button {
-        width: 50%;
-        padding: 10px;
-        border: none;
-        border-radius: 50px;
-        background-color: #ee4702;
-        color: #fff;
-        cursor: pointer;
-    }
-
-    .circle-area {
-        position: absolute;
-        top: 0%;
-        right: 0;
-        width: 140%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        background-color: #ee4702;
-        border-radius: 0 10px 10px 0;
-        color: #fff;
-        clip-path: circle(50% at 100% 50%); /* Tworzenie okręgu za pomocą clip-path */
-    }
-
-    .circle {
-        font-size: 24px;
-        font-weight: bold;
-        text-align: center;
-        padding: 20px;
-        box-sizing: border-box;
-        margin-left: 75vw;
-    }
-
-    .circle-text {
-        margin-bottom: 40px;
-        font-size: 40px; /* Dodana właściwość font-size */
-        font-weight: 1000;
-    }
-
-    .circle-text2 {
-        margin-bottom: 30px;
-        font-size: 20px; /* Dodana właściwość font-size */
-        font-weight: 200;
-    }
-
-
-    .circle button {
-        width: 50%;
-        padding: 10px;
-        border: none;
-        border-radius: 50px;
-        background-color: #ffffff;
-        color: #ee4702;
-        cursor: pointer;
-    }
-
-</style>
-
 <div class="container">
-<!--    <div> th:if="${param.succes} class="alert alert-success"</div>-->
     <div class="registration-form">
         <h2>Rejestracja</h2>
-        <form action="#" th:action="@{/klienci/dodajform}" th:object="${klient}" method="post">
-            <input type="text" th:field="*{imie}" placeholder="Imię">
-            <input type="text" th:field="*{nazwisko}" placeholder="Nazwisko">
-<!--            <input type="text" th:field="*{adresId.ulica}" placeholder="Adres 1">-->
-<!--            <input type="text" th:field="*{adresId.kodPocztowy}" placeholder="Adres 2 (opcjonalnie)">-->
-            <input type="email" th:field="*{email}" placeholder="E-mail">
-            <input type="text" th:field="*{login}" placeholder="Login">
-            <input type="password" th:field="*{haslo}" placeholder="Hasło" id="haslo">
-            <input type="password" placeholder="Powtórz hasło" id="potwierdzHaslo">
-            <button type="submit" onclick="return sprawdzHasla()">Zarejestruj się</button>
+        <form action="#" method="post" onsubmit="return validateForm()">
+            <input type="text" id="imie" name="imie" placeholder="Imię" required>
+            <input type="text" id="nazwisko" name="nazwisko" placeholder="Nazwisko" required>
+            <input type="email" id="email" name="email" placeholder="E-mail" required>
+            <input type="text" id="login" name="login" placeholder="Login" required>
+            <input type="password" id="haslo" name="haslo" placeholder="Hasło" required>
+            <input type="password" id="potwierdzHaslo" name="potwierdzHaslo" placeholder="Powtórz hasło" required>
+            <button type="submit">Zarejestruj się</button>
 
-            <div th:if="${errorMessage}" class="error-message">
-                <p th:text="${errorMessage}"></p>
+            <div class="error-message" style="display: none;">
+                <p></p>
             </div>
         </form>
     </div>
 
     <script>
-        function sprawdzHasla() {
-            var haslo = document.getElementById("haslo").value;
-            var potwierdzHaslo = document.getElementById("potwierdzHaslo").value;
-            if (haslo !== potwierdzHaslo) {
-                var errorMessage = "Hasło i potwierdzenie hasła są różne!";
-                var errorDiv = document.querySelector(".error-message");
+        function validateForm() {
+            var imie = document.getElementById("imie").value.trim();
+            var nazwisko = document.getElementById("nazwisko").value.trim();
+            var email = document.getElementById("email").value.trim();
+            var login = document.getElementById("login").value.trim();
+            var haslo = document.getElementById("haslo").value.trim();
+            var potwierdzHaslo = document.getElementById("potwierdzHaslo").value.trim();
+            var errorDiv = document.querySelector(".error-message");
+            var errorMessage = "";
+
+            // Sprawdzenie uzupełnienia wszystkich pól
+            if (!imie || !nazwisko || !email || !login || !haslo || !potwierdzHaslo) {
+                errorMessage = "Wszystkie pola są wymagane.";
                 errorDiv.innerHTML = "<p>" + errorMessage + "</p>";
-                errorDiv.style.display = "block"; // Wyświetl div z komunikatem
-                return false; // Przerwij wysyłanie formularza
+                errorDiv.style.display = "block";
+                return false;
             }
-            return true; // Kontynuuj wysyłanie formularza
+
+            // Sprawdzenie poprawności adresu e-mail
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                errorMessage = "Nieprawidłowy adres e-mail.";
+                errorDiv.innerHTML = "<p>" + errorMessage + "</p>";
+                errorDiv.style.display = "block";
+                return false;
+            }
+
+            // Sprawdzenie zgodności haseł
+            if (haslo !== potwierdzHaslo) {
+                errorMessage = "Hasło i potwierdzenie hasła są różne!";
+                errorDiv.innerHTML = "<p>" + errorMessage + "</p>";
+                errorDiv.style.display = "block";
+                return false;
+            }
+
+            // Ukrycie komunikatu o błędzie, jeśli wszystko jest w porządku
+            errorDiv.style.display = "none";
+            return true;
         }
     </script>
 
@@ -164,7 +75,6 @@
             <div class="circle-text2">Tutaj znajdziesz formularz rejestracyjny.</div>
             <button type="button">Przycisk</button>
         </div>
-
     </div>
 </div>
 
