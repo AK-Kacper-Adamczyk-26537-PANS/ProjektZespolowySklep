@@ -1,3 +1,4 @@
+
 .container {
     text-align: center;
     display: flex;
@@ -28,11 +29,12 @@
 
 input[type="text"] {
     width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 50px;
     box-sizing: border-box;
+    padding: 10px 10px 10px 20px;
+    background-color: #e3e3e3;
 }
 /*
 input[type="radio"] {
@@ -45,16 +47,34 @@ input[type="radio"] {
     margin-right: 10px;
 }
 
+input::placeholder {
+    color: #000; /* Kolor tekstu w placeholderze */
+}
+
+.text-way{
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 0;
+}
+
 
 button {
     width: 100%;
     padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
     cursor: pointer;
     margin-top: 20px;
+
+    background-color: #ee4702;
+    color: #fff;
+    border: 2px solid #ee4702;
+    border-radius: 50px;
+}
+
+#save-button {
+    background-color: #ee4702;
+    color: #fff;
+    border: 2px solid #ee4702;
+    border-radius: 50px;
 }
 
 hr {
@@ -63,10 +83,19 @@ hr {
 
 .option-block {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
 .option-block .price {
     margin-left: auto;
+}
+
+.right-section label {
+    display: inline-block;
+    width: 100px; /* Ustaw szerokość etykiety opcji */
+}
+
+.right-section .price {
+    float: right; /* Wyrównaj cenę do prawej strony */
 }

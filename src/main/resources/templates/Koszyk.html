@@ -66,7 +66,10 @@
         </div>
     </div>
     <!-- Przycisk do potwierdzenia zakupu -->
-    <button type="submit" class="button-confirm">Zatwierdź</button>
+<!--    <button type="submit" class="button-confirm">Zatwierdź</button>-->
+    <form th:action="@{/koszyk/1/zlozZamowienie}" method="post">
+        <button type="submit" class="button-confirm">Zatwierdź</button>
+    </form>
 </div>
 
 

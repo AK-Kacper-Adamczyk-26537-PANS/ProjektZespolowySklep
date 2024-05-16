@@ -132,22 +132,67 @@ public class KoszykController {
         koszykService.deleteKoszykKlienta(idKlienta);
         return "koszyk";
     }
-    @PostMapping("/{idKlienta}/zlozzamowienie") //dalej trzeba obczaić jak uzyskać Id klienta (może z JWT?)
-    @Transactional
-//    public String zlozZamowienie(@PathVariable("idKlienta") int idKlienta){
-    public String zlozZamowienie(Model model) {  // Usunąłem tutaj {int idKlienta} z parametrów
+//    @PostMapping("/{idKlienta}/zlozzamowienie") //dalej trzeba obczaić jak uzyskać Id klienta (może z JWT?)
+//    @Transactional
+////    public String zlozZamowienie(@PathVariable("idKlienta") int idKlienta){
+//    public String zlozZamowienie(Model model) {  // Usunąłem tutaj {int idKlienta} z parametrów
+//
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+//        int idKlienta = userDetails.getId(); // Pobierz ID zalogowanego użytkownika
+//
+//        //Uzyskaj potrzebne dane klienta
+//        KlientEntity klient = klientRep.findByIdKlienta(idKlienta);
+////        System.out.println("Dane klienta" + klient.getImie() +" "+ klient.getAdresId().getIdAdresu());
+//        //utwórz nowe zamówienie dla id klienta
+//        ZamowienieEntity zamowienie = new ZamowienieEntity();
+//        int idZamowienia = zamowienie.getIdZamowienia(); //przypisuje 0 - tego nie chcemy - a może jendak nie w tym problem bo id prawidlowo przypisuje później chyba
+////        System.out.println("Zamowenie nr"+idZamowienia);
+//        zamowienie.setCzyZaplacone(false);
+//        zamowienie.setStatus("Złożone");
+//        zamowienie.setKlientByKlientId(klientRep.findByIdKlienta(idKlienta));
+//
+//        //Kopia adresu klienta aby dodać adres wysyłki
+//        AdresEntity adresKlienta = adresRep.findByIdAdresu(klient.getAdresId().getIdAdresu());
+//        AdresEntity adresZamowienia = new AdresEntity();
+//        adresZamowienia.setKraj(adresKlienta.getKraj());
+//        adresZamowienia.setMiejscowosc(adresKlienta.getMiejscowosc());
+//        adresZamowienia.setKodPocztowy(adresKlienta.getKodPocztowy());
+//        adresZamowienia.setUlica(adresKlienta.getUlica());
+//        adresZamowienia.setNrDomu(adresKlienta.getNrDomu());
+//        if(adresKlienta.getNrMieszkania()!=null)
+//            adresZamowienia.setNrMieszkania(adresKlienta.getNrMieszkania());
+//        adresRep.save(adresZamowienia);
+//
+//        //i przypisujemy adres do zamowienia
+//        zamowienie.setAdresByAdresId(adresZamowienia);
+//        zamowienieRep.save(zamowienie);
+//
+//        //pętlą przejdź przez rekordy koszyka dla idklienta i iteracyjnie wypełnij koszykZamowienie
+//        List<KoszykDto> koszyk = koszykService.findKoszykByKlientId(idKlienta);
+//        for (KoszykDto koszykDto : koszyk) {
+//            ProduktZamowienieEntity produktZamowienie = new ProduktZamowienieEntity();
+//            ProduktZamowieniePK id = new ProduktZamowieniePK(zamowienie.getIdZamowienia(), koszykDto.getProdukt().getIdProduktu());
+//
+//            produktZamowienie.setIdpz(id);
+//            produktZamowienie.setProduktByProduktId(koszykDto.getProdukt());
+//            produktZamowienie.setZamowienieByZamowienieId(zamowienie);
+//            produktZamowienie.setIlosc(koszykDto.getIlosc());
+//
+//            produktZamowienieRep.save(produktZamowienie); // Ensure this is called after all fields are set
+//        }
+//
+//        return "PodsumowanieZamowienia"; //widok do zrobienia
+//    }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        int idKlienta = userDetails.getId(); // Pobierz ID zalogowanego użytkownika
+    @PostMapping("/1/zlozZamowienie")
+    @Transactional
+    public String zlozZamowienie(Model model) {
+        int idKlienta = 1; // Statyczne ID klienta
 
         //Uzyskaj potrzebne dane klienta
         KlientEntity klient = klientRep.findByIdKlienta(idKlienta);
-//        System.out.println("Dane klienta" + klient.getImie() +" "+ klient.getAdresId().getIdAdresu());
-        //utwórz nowe zamówienie dla id klienta
         ZamowienieEntity zamowienie = new ZamowienieEntity();
-        int idZamowienia = zamowienie.getIdZamowienia(); //przypisuje 0 - tego nie chcemy - a może jendak nie w tym problem bo id prawidlowo przypisuje później chyba
-//        System.out.println("Zamowenie nr"+idZamowienia);
         zamowienie.setCzyZaplacone(false);
         zamowienie.setStatus("Złożone");
         zamowienie.setKlientByKlientId(klientRep.findByIdKlienta(idKlienta));
@@ -160,15 +205,13 @@ public class KoszykController {
         adresZamowienia.setKodPocztowy(adresKlienta.getKodPocztowy());
         adresZamowienia.setUlica(adresKlienta.getUlica());
         adresZamowienia.setNrDomu(adresKlienta.getNrDomu());
-        if(adresKlienta.getNrMieszkania()!=null)
+        if (adresKlienta.getNrMieszkania() != null)
             adresZamowienia.setNrMieszkania(adresKlienta.getNrMieszkania());
         adresRep.save(adresZamowienia);
 
-        //i przypisujemy adres do zamowienia
         zamowienie.setAdresByAdresId(adresZamowienia);
         zamowienieRep.save(zamowienie);
 
-        //pętlą przejdź przez rekordy koszyka dla idklienta i iteracyjnie wypełnij koszykZamowienie
         List<KoszykDto> koszyk = koszykService.findKoszykByKlientId(idKlienta);
         for (KoszykDto koszykDto : koszyk) {
             ProduktZamowienieEntity produktZamowienie = new ProduktZamowienieEntity();
@@ -179,9 +222,12 @@ public class KoszykController {
             produktZamowienie.setZamowienieByZamowienieId(zamowienie);
             produktZamowienie.setIlosc(koszykDto.getIlosc());
 
-            produktZamowienieRep.save(produktZamowienie); // Ensure this is called after all fields are set
+            produktZamowienieRep.save(produktZamowienie);
         }
 
-        return "PodsumowanieZamowienia"; //widok do zrobienia
+        return "redirect:/DaneDostawy"; // Przekierowanie do strony DaneDostawy
     }
+
+
+
 }
