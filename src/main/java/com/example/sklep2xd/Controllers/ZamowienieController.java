@@ -58,4 +58,9 @@ public class ZamowienieController {
         zamowienieService.updateZamowienie(zamowienieDto);
         return "redirect:/Zamowienie/lista";
     }
+
+    @GetMapping("/ZamowienieZlozone")
+    public String zamowienieZlozone() {
+        return "ZamowienieZlozone"; // Nazwa widoku (HTML) do wyświetlenia
+    }
 }

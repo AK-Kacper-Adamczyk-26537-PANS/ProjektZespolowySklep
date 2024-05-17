@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" th:href="@{/Grafiki/ff.ico}" type="image/png" size="32">
+    <title>Zamówienie złożone</title>
+</head>
+<body>
+
+<div class="header">
+    <div class="icon-container-left">
+        <img src="" th:src="@{/Grafiki/user.png}" alt="Ikona prawa" class="icon">
+    </div>
+    <div class="logo-container">
+        <img src="" th:src="@{/Grafiki/ff.png}" alt="Logo" class="logo">
+    </div>
+    <div class="icon-container-right">
+        <img src="" th:src="@{/Grafiki/shopping-bag.png}" alt="Ikona prawa" class="icon">
+    </div>
+</div>
+
+<div class="navbar">
+    <div class="navbar-line"></div>
+    <a href="/Produkt/lista2/4">Bluzy</a>
+    <a href="/Produkt/lista2/3">Kurtki</a>
+    <a href="/Produkt/lista2/1">Koszulki</a>
+    <a href="/Produkt/lista2/2">Spodnie</a>
+    <a href="/Produkt/lista2">Przeglądaj wszystko</a>
+</div>
+
+<div class="main-container">
+    <div class="container">
+        <h2>Twoje zamówienie zostało złożone</h2>
+        <p>Dziękujemy za zakupy w naszym sklepie!</p>
+        <button class="btn" onclick="window.location.href='/home'">Powrót do strony głównej</button>
+    </div>
+</div>
+
+<footer>
+    <p>Zawartość tej strony</p>
+    <img src="" th:src="@{/Grafiki/ff.png}" alt="Logo" class="logo-footer">
+</footer>
+
+<script>
+    window.onload = function() {
+        var footer = document.querySelector("footer");
+        var bodyHeight = document.body.offsetHeight;
+        var windowHeight = window.innerHeight;
+
+        if (bodyHeight < windowHeight) {
+            footer.style.position = "fixed";
+            footer.style.bottom = "0";
+            footer.style.width = "100%";
+        }
+    };
+</script>
+
+
+<style>
+
+    body {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        min-height: 100vh;
+    }
+
+    .main-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .container {
+        text-align: center;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 20px;
+    }
+
+    h2 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        background-color: #ff6600;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .btn:hover {
+        background-color: #ff4500;
+    }
+
+</style>
+
+</body>
+</html>

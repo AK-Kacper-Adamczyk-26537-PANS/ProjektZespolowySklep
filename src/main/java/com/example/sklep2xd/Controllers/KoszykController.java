@@ -187,17 +187,17 @@ public class KoszykController {
 
     @PostMapping("/1/zlozZamowienie")
     @Transactional
-    public String zlozZamowienie(Model model) {
+    public String zlozZamowienie(RedirectAttributes redirectAttributes) {
         int idKlienta = 1; // Statyczne ID klienta
 
-        //Uzyskaj potrzebne dane klienta
+        // Uzyskaj potrzebne dane klienta
         KlientEntity klient = klientRep.findByIdKlienta(idKlienta);
         ZamowienieEntity zamowienie = new ZamowienieEntity();
         zamowienie.setCzyZaplacone(false);
         zamowienie.setStatus("Złożone");
         zamowienie.setKlientByKlientId(klientRep.findByIdKlienta(idKlienta));
 
-        //Kopia adresu klienta aby dodać adres wysyłki
+        // Kopia adresu klienta aby dodać adres wysyłki
         AdresEntity adresKlienta = adresRep.findByIdAdresu(klient.getAdresId().getIdAdresu());
         AdresEntity adresZamowienia = new AdresEntity();
         adresZamowienia.setKraj(adresKlienta.getKraj());
@@ -213,6 +213,7 @@ public class KoszykController {
         zamowienieRep.save(zamowienie);
 
         List<KoszykDto> koszyk = koszykService.findKoszykByKlientId(idKlienta);
+        double sumaCen = koszyk.stream().mapToDouble(k -> k.getProdukt().getCena() * k.getIlosc()).sum();
         for (KoszykDto koszykDto : koszyk) {
             ProduktZamowienieEntity produktZamowienie = new ProduktZamowienieEntity();
             ProduktZamowieniePK id = new ProduktZamowieniePK(zamowienie.getIdZamowienia(), koszykDto.getProdukt().getIdProduktu());
@@ -225,9 +226,8 @@ public class KoszykController {
             produktZamowienieRep.save(produktZamowienie);
         }
 
-        return "redirect:/DaneDostawy"; // Przekierowanie do strony DaneDostawy
+        // Przekaż sumę cen jako parametr URL
+        return "redirect:/DaneDostawy?sumaCen=" + sumaCen;
     }
-
-
 
 }

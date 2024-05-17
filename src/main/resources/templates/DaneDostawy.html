@@ -12,7 +12,6 @@
 
 <div class="header">
     <div class="icon-container-left">
-<!--        <img src="" th:src="@{/Grafiki/search.png}" alt="Ikona lewa" class="icon">-->
         <img src="" th:src="@{/Grafiki/user.png}" alt="Ikona prawa" class="icon">
     </div>
     <div class="logo-container">
@@ -20,7 +19,6 @@
     </div>
     <div class="icon-container-right">
         <img src="" th:src="@{/Grafiki/shopping-bag.png}" alt="Ikona prawa" class="icon">
-<!--        <img src="" th:src="@{/Grafiki/user.png}" alt="Ikona prawa" class="icon">-->
     </div>
 </div>
 
@@ -34,51 +32,53 @@
 </div>
 
 <div class="container">
-    <h2>Podaj dane dostawy</h2>
-    <div class="delivery-details">
-        <div class="left-section">
-            <input type="text" placeholder="Imię">
-            <input type="text" placeholder="Nazwisko">
-            <input type="text" placeholder="Adres">
-            <input type="text" placeholder="Miasto">
-            <input type="text" placeholder="Kod pocztowy">
-            <input type="text" placeholder="Telefon">
-            <input type="text" placeholder="E-mail">
-        </div>
-        <div class="right-section">
-            <p class="text-way">Tekst:</p>
-            <input type="radio" id="option1" name="option" value="option1">
-            <label for="option1">Opcja 1</label><br>
-            <input type="radio" id="option2" name="option" value="option2">
-            <label for="option2">Opcja 2</label><br>
-            <input type="radio" id="option3" name="option" value="option3">
-            <label for="option3">Opcja 3</label><br>
-
-            <p class="text-way">Kolejne tekst:</p>
-
-            <input type="radio" id="option4" name="option2" value="option4">
-            <label for="option4">Opcja 4</label><span class="price">14.99 PLN</span><br>
-
-            <input type="radio" id="option5" name="option2" value="option5">
-            <label for="option5">Opcja 5</label><span class="price">14.99 PLN</span><br>
-
-            <input type="radio" id="option6" name="option2" value="option6">
-            <label for="option6">Opcja 6</label><span class="price">14.99 PLN</span><br>
-
-            <hr>
-
-            <div class="option-block">
-                <p class="text-way">Suma:</p>
-                <div class="price">
-                    <p>14.99 PLN</p>
-                </div>
+    <form th:action="@{/DaneDostawy/submitDaneDostawy}" method="post">
+        <h2>Podaj dane dostawy</h2>
+        <div class="delivery-details">
+            <div class="left-section">
+                <input type="text" name="imie" placeholder="Imię" th:value="${klient.imie}" required>
+                <input type="text" name="nazwisko" placeholder="Nazwisko" th:value="${klient.nazwisko}" required>
+                <input type="text" name="ulica" placeholder="Ulica" th:value="${adres.ulica}" required>
+                <input type="text" name="nrDomu" placeholder="Numer domu" th:value="${adres.nrDomu}" required>
+                <input type="text" name="nrMieszkania" placeholder="Numer mieszkania" th:value="${adres.nrMieszkania}">
+                <input type="text" name="kodPocztowy" placeholder="Kod pocztowy" th:value="${adres.kodPocztowy}" required>
+                <input type="text" name="miasto" placeholder="Miasto" th:value="${adres.miejscowosc}" required>
+                <input type="text" name="telefon" placeholder="Telefon" th:value="${klient.telefon}" required>
+                <input type="email" name="email" placeholder="E-mail" th:value="${klient.email}" required>
             </div>
-            <button type="submit">Zatwierdź</button>
+            <div class="right-section">
+                <p class="text-way">Opcje płatności:</p>
+                <input type="radio" id="option1" name="option" value="option1">
+                <label for="option1">BLIK</label><br>
+                <input type="radio" id="option2" name="option" value="option2">
+                <label for="option2">Karta</label><br>
+                <input type="radio" id="option3" name="option" value="option3">
+                <label for="option3">Przelew</label><br>
+
+                <p class="text-way">Opcje dostawy:</p>
+
+                <input type="radio" id="option4" name="option2" value="option4" data-price="0">
+                <label for="option4">Odbiór osobisty</label><span class="price">0 PLN</span><br>
+
+                <input type="radio" id="option5" name="option2" value="option5" data-price="19.99">
+                <label for="option5">Paczkomaty InPost</label><span class="price">19.99 PLN</span><br>
+
+                <input type="radio" id="option6" name="option2" value="option6" data-price="24.99">
+                <label for="option6">Kurier DPD</label><span class="price">24.99 PLN</span><br>
+
+                <hr>
+
+                <div class="option-block">
+                    <p class="text-way">Suma:</p>
+                    <div class="price">
+                        <p id="total-price" th:text="'' + ${sumaCen} + ' PLN'">0.00 PLN</p>
+                    </div>
+                </div>
+
+                <button type="submit">Zatwierdź</button>
+            </div>
         </div>
-
-
-    </div>
-
+    </form>
 </div>
 
 <footer>
@@ -87,6 +87,20 @@
 </footer>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const optionElements = document.querySelectorAll('input[name="option2"]');
+        const totalPriceElement = document.getElementById('total-price');
+        let basePrice = parseFloat(totalPriceElement.textContent.replace(' PLN', '').trim());
+
+        optionElements.forEach(function (option) {
+            option.addEventListener('change', function () {
+                const selectedOptionPrice = parseFloat(this.getAttribute('data-price'));
+                const newTotalPrice = basePrice + selectedOptionPrice;
+                totalPriceElement.textContent = newTotalPrice.toFixed(2) + ' PLN';
+            });
+        });
+    });
+
     window.onload = function() {
         var footer = document.querySelector("footer");
         var bodyHeight = document.body.offsetHeight;
