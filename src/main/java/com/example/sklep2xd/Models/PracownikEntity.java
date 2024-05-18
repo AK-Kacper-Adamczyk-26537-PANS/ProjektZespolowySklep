@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -35,23 +35,14 @@ public class PracownikEntity {
     @Basic
     @Column(name = "nazwisko", nullable = true, length = 50)
     private String nazwisko;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "pracownik_roles",
+            joinColumns = @JoinColumn(name = "pracownik_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles;
 
-    @Builder.Default
-    private String someField = "default value";
-
-
-    public List<RolaPracownika> getRole() {
-        return role;
-    }
-
-    public void setRole(List<RolaPracownika> role) {
-        this.role = role;
-    }
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "Role_pracownicy", joinColumns = @JoinColumn(name = "id_pr", referencedColumnName = "id_pracownika"),
-    inverseJoinColumns = @JoinColumn(name = "id_roli", referencedColumnName = "id_roli"))
-    private List<RolaPracownika> role = new ArrayList<>();
 
     public int getIdPracownika() {
         return idPracownika;

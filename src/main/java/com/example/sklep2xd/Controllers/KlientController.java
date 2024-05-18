@@ -7,7 +7,9 @@ import com.example.sklep2xd.Repositories.AdresRep;
 import com.example.sklep2xd.Repositories.KlientRep;
 import com.example.sklep2xd.Service.AdresService;
 import com.example.sklep2xd.Service.KlientService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +27,14 @@ public class KlientController {
 
     @Autowired
     private AdresRep adresRepository;
+    private PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public KlientController(KlientService klientService, AdresService adresService) {
+    public KlientController(KlientService klientService, AdresService adresService, PasswordEncoder passwordEncoder) {
         this.klientService = klientService;
         this.adresService = adresService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 //    @GetMapping("/lista")
@@ -53,12 +57,16 @@ public class KlientController {
     public String createKlientForm(Model model) {
         KlientEntity klient = new KlientEntity();
         model.addAttribute("klient", klient);
+        model.addAttribute("hasAddress", klient.getAdresId() != null); //jakby był klient bez adresu jeszcze
         return "Rejestracja";
     }
 
     @PostMapping("/dodajform")
     public String saveKlient(@ModelAttribute("klient") KlientEntity klient, Model model) {
         // Sprawdzenie czy istnieje użytkownik o podanym e-mailu
+        String pass = klient.getHaslo();
+        pass = passwordEncoder.encode(pass);
+        klient.setHaslo(pass);
         KlientEntity existingEmailUser = klientService.findKlientByEmail(klient.getEmail());
         if (existingEmailUser != null) {
             model.addAttribute("errorMessage", "Użytkownik z podanym adresem e-mail już istnieje.");
@@ -78,26 +86,35 @@ public class KlientController {
     }
 
 
-    @GetMapping("/edytuj/{klientId}")
-    public String editKlientForm(@PathVariable("klientId") int klientId, Model model) {
+    @GetMapping("/edytuj")
+    public String editKlientForm(HttpSession session, Model model) {
+        Integer klientId = (Integer) session.getAttribute("klientId");
+        if (klientId == null) {
+            // Redirect to login if klientId is not found in the session
+            return "redirect:/logowanie";
+        }
         KlientDto klient = klientService.findKlientById(klientId);
         model.addAttribute("klient", klient);
-//        return "EdytujKlienta";
+        model.addAttribute("hasAddress", klient.getAdresId() != null);
         return "TwojeKonto";
     }
 
-    // Metoda do obsługi zapisu zmian danych klienta i adresu
-    @PostMapping("/edytuj/{klientId}")
-    public String edytujKlienta(@PathVariable("klientId") int klientId,
+    @PostMapping("/edytuj")
+    public String edytujKlienta(HttpSession session,
                                 @RequestParam("imie") String imie,
                                 @RequestParam("nazwisko") String nazwisko,
                                 @RequestParam("email") String email,
-                                @RequestParam("haslo") String haslo,
+                                @RequestParam(value = "haslo", required = false) String haslo,
                                 @RequestParam("ulica") String ulica,
                                 @RequestParam("nrDomu") String nrDomu,
                                 @RequestParam("nrMieszkania") String nrMieszkania,
                                 @RequestParam("kodPocztowy") String kodPocztowy,
-                                @RequestParam("miejscowosc") String miejscowosc) {
+                                @RequestParam("miejscowosc") String miejscowosc,
+                                @RequestParam("kraj") String kraj) {
+        Integer klientId = (Integer) session.getAttribute("klientId");
+        if (klientId == null) {
+            return "redirect:/logowanie"; // or some other appropriate action
+        }
         // Pobierz klienta z bazy danych
         KlientEntity klient = klientRepository.findById(klientId).orElse(null);
         if (klient != null) {
@@ -105,23 +122,33 @@ public class KlientController {
             klient.setImie(imie);
             klient.setNazwisko(nazwisko);
             klient.setEmail(email);
-            klient.setHaslo(haslo);
+            if (haslo != null && !haslo.isEmpty()) {
+                klient.setHaslo(passwordEncoder.encode(haslo));
+            }
             klientRepository.save(klient);
 
-            // Pobierz adres klienta z bazy danych
-            AdresEntity adres = klient.getAdresId();
-            if (adres != null) {
-                // Zaktualizuj dane adresowe
+            // Zaktualizuj dane adresowe tylko jeśli są podane wartości
+            if (!ulica.isEmpty() || !nrDomu.isEmpty() || !nrMieszkania.isEmpty() || !kodPocztowy.isEmpty() || !miejscowosc.isEmpty() || !kraj.isEmpty()) {
+                AdresEntity adres = klient.getAdresId();
+                if (adres == null) {
+                    adres = new AdresEntity();
+                }
                 adres.setUlica(ulica);
                 adres.setNrDomu(nrDomu);
                 adres.setNrMieszkania(nrMieszkania);
                 adres.setKodPocztowy(kodPocztowy);
                 adres.setMiejscowosc(miejscowosc);
+                adres.setKraj(kraj);
                 adresRepository.save(adres);
+
+                // Przypisz adres do klienta jeśli nowy
+                if (klient.getAdresId() == null) {
+                    klient.setAdresId(adres);
+                    klientRepository.save(klient);
+                }
             }
         }
         // Przekieruj użytkownika na odpowiednią stronę po zapisie zmian
-//        return "redirect:/klienci/" + klientId;
         return "StronaGlowna";
     }
 

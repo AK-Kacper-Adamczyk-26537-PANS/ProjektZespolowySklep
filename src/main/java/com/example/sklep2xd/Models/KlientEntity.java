@@ -44,6 +44,8 @@ public class KlientEntity {
     @JoinColumn(name = "adres_id", referencedColumnName = "id_adresu")
     private AdresEntity adresId;
 
+    private String role = "KLIENT";
+
     public int getIdKlienta() {
         return idKlienta;
     }

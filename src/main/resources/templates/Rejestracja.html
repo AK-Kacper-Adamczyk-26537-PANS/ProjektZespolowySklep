@@ -12,8 +12,9 @@
 <div class="container">
     <div class="registration-form">
         <h2>Rejestracja</h2>
-        <form action="#" method="post" onsubmit="return validateForm()">
-            <input type="text" id="imie" name="imie" placeholder="Imię" required>
+<!--        <form action="#" method="post" onsubmit="return validateForm()">-->
+        <form action="#" th:action="@{/klienci/dodajform}" th:object="${klient}" method="post">
+        <input type="text" id="imie" name="imie" placeholder="Imię" required>
             <input type="text" id="nazwisko" name="nazwisko" placeholder="Nazwisko" required>
             <input type="email" id="email" name="email" placeholder="E-mail" required>
             <input type="text" id="login" name="login" placeholder="Login" required>
