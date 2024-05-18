@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @Controller
 @RequestMapping("/ProduktZamowienie")
 public class ProduktZamowienieController {
@@ -20,10 +21,7 @@ public class ProduktZamowienieController {
     public ProduktZamowienieController(ProduktZamowienieService produktZamowienieService) {
         this.produktZamowienieService = produktZamowienieService;
     }
-    //cały kontroler do przeróbki, trzeba ogarnąć żeby zwrócił zawartość jednego zamówienia i
-    //w nim od razu dodajmy usuwanie i zmianę ilości produktów
-    //w koszyku trza podobnie btw.
-    //w sumie to chyba tylko lista dla całego zamówienia jest przydatna i jej edytowanie, ale mapowania do przeróbki
+
     @GetMapping("/lista")
     public String listProduktZamowienia(Model model) {
         List<ProduktZamowienieDto> produktZamowienia = produktZamowienieService.findAllProduktZamowienia();
@@ -54,7 +52,7 @@ public class ProduktZamowienieController {
 
     @PostMapping("/edytuj/{produktZamowienieId}")
     public String updateProduktZamowienie(@PathVariable("produktZamowienieId") ProduktZamowieniePK produktZamowienieId, @ModelAttribute("produktZamowienie") ProduktZamowienieDto produktZamowienieDto) {
-        produktZamowienieDto.setIdpz(produktZamowienieId);//idk co sie dzieje
+        produktZamowienieDto.setIdpz(produktZamowienieId);
         produktZamowienieService.updateProduktZamowienie(produktZamowienieDto);
         return "redirect:/ProduktZamowienie/lista";
     }

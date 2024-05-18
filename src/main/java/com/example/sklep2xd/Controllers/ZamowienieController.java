@@ -1,9 +1,9 @@
 package com.example.sklep2xd.Controllers;
 
-import com.example.sklep2xd.Dto.KlientDto;
+import com.example.sklep2xd.Dto.ProduktZamowienieDto;
 import com.example.sklep2xd.Dto.ZamowienieDto;
 import com.example.sklep2xd.Models.ZamowienieEntity;
-import com.example.sklep2xd.Service.KlientService;
+import com.example.sklep2xd.Service.ProduktZamowienieService;
 import com.example.sklep2xd.Service.ZamowienieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,15 +11,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @Controller
 @RequestMapping("/Zamowienie")
 public class ZamowienieController {
 
     private final ZamowienieService zamowienieService;
+    private final ProduktZamowienieService produktZamowienieService;
 
     @Autowired
-    public ZamowienieController(ZamowienieService zamowienieService) {
+    public ZamowienieController(ZamowienieService zamowienieService, ProduktZamowienieService produktZamowienieService) {
         this.zamowienieService = zamowienieService;
+        this.produktZamowienieService = produktZamowienieService;
     }
 
     @GetMapping("/lista")
@@ -27,7 +30,6 @@ public class ZamowienieController {
         List<ZamowienieDto> zamowienia = zamowienieService.findAllZamowienia();
         model.addAttribute("header", "Lista wszystkich Zamówień");
         model.addAttribute("zamowienieList", zamowienia);
-//        return "Zamowienia";
         return "ListaZamowien";
     }
 
@@ -47,10 +49,13 @@ public class ZamowienieController {
     @GetMapping("/edytuj/{zamowienieId}")
     public String editZamowienieForm(@PathVariable("zamowienieId") int zamowienieId, Model model) {
         ZamowienieDto zamowienieDto = zamowienieService.findZamowienieById(zamowienieId);
+        List<ProduktZamowienieDto> produktyZamowienia = produktZamowienieService.findProduktZamowieniaByIdZamowienia(zamowienieId);
+
         model.addAttribute("zamowienieDto", zamowienieDto);
+        model.addAttribute("produktyZamowienia", produktyZamowienia);
+
         return "StatusZamowienia";
     }
-
 
     @PostMapping("/edytuj/{zamowienieId}")
     public String updateZamowienie(@PathVariable("zamowienieId") int zamowienieId, @ModelAttribute("zamowienie") ZamowienieDto zamowienieDto) {

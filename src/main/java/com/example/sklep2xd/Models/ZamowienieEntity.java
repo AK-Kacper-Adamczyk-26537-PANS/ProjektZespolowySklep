@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Builder
@@ -47,6 +48,19 @@ public class ZamowienieEntity {
     @ManyToOne
     @JoinColumn(name = "pracownik_id", referencedColumnName = "id_pracownika")
     private PracownikEntity pracownik;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "zamowienie_produkt",
+            joinColumns = @JoinColumn(name = "zamowienie_id"),
+            inverseJoinColumns = @JoinColumn(name = "produkt_id")
+    )
+    private List<ProduktEntity> produkty;
+
+
+
+
 
     public int getIdZamowienia() {
         return idZamowienia;
@@ -112,5 +126,14 @@ public class ZamowienieEntity {
 
     public void setPracownikByPracownikId(PracownikEntity pracownikByPracownikId) {
         this.pracownik = pracownikByPracownikId;
+    }
+
+
+    public List<ProduktEntity> getProdukty() {
+        return produkty;
+    }
+
+    public void setProdukty(List<ProduktEntity> produkty) {
+        this.produkty = produkty;
     }
 }

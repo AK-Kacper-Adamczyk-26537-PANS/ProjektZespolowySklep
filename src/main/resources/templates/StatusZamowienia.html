@@ -12,7 +12,7 @@
 
 <div class="header">
     <div class="icon-container-left">
-<!--        <img src="" th:src="@{/Grafiki/search.png}" alt="Ikona lewa" class="icon">-->
+        <!--        <img src="" th:src="@{/Grafiki/search.png}" alt="Ikona lewa" class="icon">-->
     </div>
     <div class="logo-container">
         <a href="/Pracownik/dzialzamowien">
@@ -20,54 +20,39 @@
         </a>
     </div>
     <div class="icon-container-right">
-<!--        <img src="" th:src="@{/Grafiki/shopping-bag.png}" alt="Ikona prawa" class="icon">-->
+        <!--        <img src="" th:src="@{/Grafiki/shopping-bag.png}" alt="Ikona prawa" class="icon">-->
         <img src="" th:src="@{/Grafiki/user.png}" alt="Ikona prawa" class="icon">
     </div>
 </div>
 
 <div class="tytul">Status zamówienia</div>
 
-
 <div class="statuszamowienia">
-    <div class="produkty">
-        <div class="daneproduktu">
-            <img src="img/obrazek.jpg" class="obrazek">
+    <div class="produkty" >
+        <div class="daneproduktu" th:each="produktZamowienie : ${produktyZamowienia}">
+            <img crossorigin="anonymous" th:src="@{|${produktZamowienie.produkt.urlzdjecia}|}" class="obrazek">
             <div class="produkttekst">
-                <p class="tytulproduktu">Bluza David Star</p>
-                <p class="cenaproduktu">147,77zł</p>
-                <p class="dostepnerozmiary">Rozmiar: M</p>
+                <p class="tytulproduktu" th:text="${produktZamowienie.produkt.nazwa}">Bluza David Star</p>
+                <p class="cenaproduktu" th:text="${produktZamowienie.produkt.cena} + ' zł'">147,77zł</p>
+                <p class="dostepnerozmiary" th:text="'Rozmiar: ' + ${produktZamowienie.produkt.rozmiar}">Rozmiar: M</p>
+                <p class="ilosc" th:text="'Ilość: ' + ${produktZamowienie.ilosc}">Ilość: 1</p>
             </div>
         </div>
-        <div class="daneproduktu">
-            <img src="img/obrazek.jpg" class="obrazek">
-            <div class="produkttekst">
-                <p class="tytulproduktu">Bluza David Star</p>
-                <p class="cenaproduktu">147,77zł</p>
-                <p class="dostepnerozmiary">Rozmiar: M</p>
-            </div>
-        </div>
-
     </div>
     <div class="informacje" th:object="${zamowienieDto}">
         <p>Łączna wartość zamówienia: <span th:text="*{wartoscZamowienia}"></span> PLN</p>
-        <p>Numer faktury: 474747</p>
+        <!-- <p>Numer faktury: <span th:text="*{numerFaktury}">474747</span></p> -->
 
         <div class="form-group">
-<!--            <label for="status" class="control-label">Status zamówienia</label>-->
             <select id="status" class="form-control" name="status">
                 <option value="" disabled selected>Kategoria</option>
                 <option value="Zrealizowane" th:selected="${zamowienieDto.status == 'Zrealizowane'}">Zrealizowane</option>
-                <option value="W trakcje realizacji" th:selected="${zamowienieDto.status == 'W trakcje realizacji'}">W trakcie realizacji</option>
+                <option value="W trakcie realizacji" th:selected="${zamowienieDto.status == 'W trakcie realizacji'}">W trakcie realizacji</option>
                 <option value="Niemożliwe do realizacji" th:selected="${zamowienieDto.status == 'Niemożliwe do realizacji'}">Niemożliwe do realizacji</option>
-                <option value="Niemożliwe do realizacji" th:selected="${zamowienieDto.status == 'Oczekujące'}">Oczekujące</option>
+                <option value="Oczekujące" th:selected="${zamowienieDto.status == 'Oczekujące'}">Oczekujące</option>
             </select>
         </div>
-
     </div>
-
 </div>
-
-
 </body>
-
 </html>

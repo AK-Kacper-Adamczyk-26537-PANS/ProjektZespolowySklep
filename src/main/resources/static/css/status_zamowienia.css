@@ -1,65 +1,4 @@
-/*body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
-
-.naglowek {
-    max-width: 1980px;
-    height: 150px;
-    background-color: #fdf7f0;
-}
-
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 20px 10px;
-}
-
-.icon-container-left {
-    width: 20vw;
-    padding-left: 1vw;
-}
-
-.logo-container {
-    flex-grow: 1;
-    text-align: center;
-}
-
-.logo {
-    max-width: 162px;
-    max-height: 90px;
-    margin: 0 auto;
-}
-
-.icon-container-right {
-    width: 20vw;
-    padding-right: 1vw;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.icon {
-    width: 30px;
-    height: 30px;
-    margin: 0 10px;
-}*/
-
-/*.tytul {*/
-/*    text-align: center;*/
-/*    font-size: 36px;*/
-/*    font-weight: 800;*/
-/*    font-family:"Segoe UI", sans-serif;*/
-/*    margin-bottom: 45px;*/
-/*}*/
-
 .tytul {
-    /*text-align: center;*/
-    /*font-size: 36px;*/
-    /*font-weight: 800;*/
-    /*!*font-family:"Segoe UI", sans-serif;*!*/
-    /*margin-bottom: 45px;*/
 
     margin: 40px auto 45px;
     text-align: center;
@@ -81,12 +20,13 @@
 
     background-color: white;
     width: 700px;
-    height: 350px;
+    /*height: 350px;*/
     margin: 10px;
     display: flex;
 
     justify-content: center;
     flex-direction: column;
+    padding-left: 50px;
 }
 
 .daneproduktu{
